@@ -69,5 +69,31 @@ public class MainActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDB.updateInfo(txtName.getText().toString(), txtPassword.getText().toString());
+                Toast.makeText(MainActivity.this, "Update Succeessfully", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDB.deleteInfo(txtName.getText().toString());
+                Toast.makeText(MainActivity.this, "Delete Succeessfully", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(myDB.readInfo(txtName.getText().toString(), txtPassword.getText().toString()))
+                    Toast.makeText(MainActivity.this, "User name password are exist", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(MainActivity.this, "User name password are not exist", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

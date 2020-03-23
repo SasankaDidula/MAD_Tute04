@@ -79,4 +79,39 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return userNames;
     }
+
+    public void deleteInfo(String userName){
+        SQLiteDatabase db = getReadableDatabase();
+        String selection = UserMaster.Users.COLUMN_NAME_USERNAME + " LIKE ?";
+        String[] selectionArgs = { userName };
+        db.delete(UserMaster.Users.TABLE_NAME, selection, selectionArgs);
+    }
+
+    public void updateInfo(String userName, String password){
+        SQLiteDatabase db = getReadableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(UserMaster.Users.COLUMN_NAME_PASSWORD, password);
+
+        String selection = UserMaster.Users.COLUMN_NAME_USERNAME + " LIKE ?";
+        String[] selectionArgs = { userName };
+
+        int count = db.update(
+                UserMaster.Users.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs
+        );
+    }
+
+    public boolean readInfo(String userName, String password){
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ UserMaster.Users.TABLE_NAME+" WHERE "+ UserMaster.Users.COLUMN_NAME_USERNAME+" = '"+userName+"' and "+ UserMaster.Users.COLUMN_NAME_PASSWORD+" = '"+password+"'", null);
+        cursor.moveToFirst();
+        if((cursor.getString(0) == userName) && (cursor.getString(1) == password))
+                return true;
+            else
+                return false;
+        }
 }
